@@ -98,24 +98,40 @@ async def type_afk_is_not_true(notafk):
     afk_end = back_alive.replace(microsecond=0)
     if ISAFK:
         ISAFK = False
-        msg = await notafk.respond(f"🔥 __**ONLINE**__")
+        msg = await notafk.respond("🔥 __**ONLINE**__")
         time.sleep(7)
         await msg.delete()
         await notafk.client(UpdateProfileRequest(first_name=user.first_name, last_name=last1))
         if BOTLOG:
             await notafk.client.send_message(
                 BOTLOG_CHATID,
-                "Anda Mendapatkan " + str(COUNT_MSG) + " Pesan Dari " +
-                str(len(USERS)) + " Obrolan Saat Anda OFF",
+                (
+                    (
+                        f"Anda Mendapatkan {str(COUNT_MSG)} Pesan Dari "
+                        + str(len(USERS))
+                    )
+                    + " Obrolan Saat Anda OFF"
+                ),
             )
+
             for i in USERS:
                 name = await notafk.client.get_entity(i)
                 name0 = str(name.first_name)
                 await notafk.client.send_message(
                     BOTLOG_CHATID,
-                    "[" + name0 + "](tg://user?id=" + str(i) + ")" +
-                    " Mengirim Mu " + "`" + str(USERS[i]) + " Pesan`",
+                    (
+                        (
+                            (
+                                f"[{name0}](tg://user?id={str(i)})"
+                                + " Mengirim Mu "
+                            )
+                            + "`"
+                        )
+                        + str(USERS[i])
+                        + " Pesan`"
+                    ),
                 )
+
         COUNT_MSG = 0
         USERS = {}
         AFKREASON = None
@@ -135,55 +151,54 @@ async def mention_afk(mention):
     back_alivee = datetime.now()
     afk_end = back_alivee.replace(microsecond=0)
     afk_since = "**Terakhir Online**"
-    if mention.message.mentioned and not (await mention.get_sender()).bot:
-        if ISAFK:
-            now = datetime.now()
-            datime_since_afk = now - afk_time  # pylint:disable=E0602
-            time = float(datime_since_afk.seconds)
-            days = time // (24 * 3600)
-            time = time % (24 * 3600)
-            hours = time // 3600
-            time %= 3600
-            minutes = time // 60
-            time %= 60
-            seconds = time
-            if days == 1:
-                afk_since = "**Kemarin**"
-            elif days > 1:
-                if days > 6:
-                    date = now + \
-                        datetime.timedelta(
-                            days=-days, hours=-hours, minutes=-minutes)
-                    afk_since = date.strftime("%A, %Y %B %m, %H:%I")
-                else:
-                    wday = now + datetime.timedelta(days=-days)
-                    afk_since = wday.strftime('%A')
-            elif hours > 1:
-                afk_since = f"`{int(hours)} Jam {int(minutes)} Menit`"
-            elif minutes > 0:
-                afk_since = f"`{int(minutes)} Menit {int(seconds)} Detik`"
+    if (
+        mention.message.mentioned
+        and not (await mention.get_sender()).bot
+        and ISAFK
+    ):
+        now = datetime.now()
+        datime_since_afk = now - afk_time  # pylint:disable=E0602
+        time = float(datime_since_afk.seconds)
+        days = time // (24 * 3600)
+        time %= 24 * 3600
+        hours = time // 3600
+        time %= 3600
+        minutes = time // 60
+        time %= 60
+        seconds = time
+        if days == 1:
+            afk_since = "**Kemarin**"
+        elif days > 1:
+            if days > 6:
+                date = now + \
+                    datetime.timedelta(
+                        days=-days, hours=-hours, minutes=-minutes)
+                afk_since = date.strftime("%A, %Y %B %m, %H:%I")
             else:
-                afk_since = f"`{int(seconds)} Detik`"
-            if mention.sender_id not in USERS:
-                if AFKREASON:
-                    await mention.reply(f"🔥 __**PESAN**__\n\n╭╼══════════════╾\n**{ALIVE_NAME} Sedang SIBUK!**\n**Sejak :** {afk_since} Yang Lalu\
+                wday = now + datetime.timedelta(days=-days)
+                afk_since = wday.strftime('%A')
+        elif hours > 1:
+            afk_since = f"`{int(hours)} Jam {int(minutes)} Menit`"
+        elif minutes > 0:
+            afk_since = f"`{int(minutes)} Menit {int(seconds)} Detik`"
+        else:
+            afk_since = f"`{int(seconds)} Detik`"
+        if mention.sender_id not in USERS:
+            if AFKREASON:
+                await mention.reply(f"🔥 __**PESAN**__\n\n╭╼══════════════╾\n**{ALIVE_NAME} Sedang SIBUK!**\n**Sejak :** {afk_since} Yang Lalu\
                         \n╰► **Alasan :** `{AFKREASON}`\n╰╼═════════╾")
+            else:
+                await mention.reply(str(choice(AFKSTR)))
+            USERS.update({mention.sender_id: 1})
+        else:
+            if USERS[mention.sender_id] % randint(2, 4) == 0:
+                if AFKREASON:
+                    await mention.reply(f"🔥 __**PESAN**__\n\n╭╼══════════════╾\n**{ALIVE_NAME} Masih SIBUK**\n**Sejak :** {afk_since} Yang Lalu\
+                            \n╰► **Alasan :** `{AFKREASON}`\n╰╼═════════╾")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
-                USERS.update({mention.sender_id: 1})
-                COUNT_MSG = COUNT_MSG + 1
-            elif mention.sender_id in USERS:
-                if USERS[mention.sender_id] % randint(2, 4) == 0:
-                    if AFKREASON:
-                        await mention.reply(f"🔥 __**PESAN**__\n\n╭╼══════════════╾\n**{ALIVE_NAME} Masih SIBUK**\n**Sejak :** {afk_since} Yang Lalu\
-                            \n╰► **Alasan :** `{AFKREASON}`\n╰╼═════════╾")
-                    else:
-                        await mention.reply(str(choice(AFKSTR)))
-                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-                else:
-                    USERS[mention.sender_id] = USERS[mention.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
+            USERS[mention.sender_id] = USERS[mention.sender_id] + 1
+        COUNT_MSG = COUNT_MSG + 1
 
 
 @register(incoming=True, disable_errors=True)
@@ -218,7 +233,7 @@ async def afk_on_pm(sender):
             datime_since_afk = now - afk_time  # pylint:disable=E0602
             time = float(datime_since_afk.seconds)
             days = time // (24 * 3600)
-            time = time % (24 * 3600)
+            time %= 24 * 3600
             hours = time // 3600
             time %= 3600
             minutes = time // 60
@@ -249,18 +264,15 @@ async def afk_on_pm(sender):
                     await sender.reply(str(choice(AFKSTR)))
                 USERS.update({sender.sender_id: 1})
                 COUNT_MSG = COUNT_MSG + 1
-            elif apprv and sender.sender_id in USERS:
+            elif apprv:
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if AFKREASON:
                         await sender.reply(f"🔥 __**PESAN**__\n\n╭╼══════════════╾\n**{ALIVE_NAME} Di Bilang Masih SIBUK**\n**Sejak :** {afk_since} Yang Lalu\
                             \n╰► **Alasan :** `{AFKREASON}`\n╰╼═════════╾")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
-                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
-                else:
-                    USERS[sender.sender_id] = USERS[sender.sender_id] + 1
-                    COUNT_MSG = COUNT_MSG + 1
+                USERS[sender.sender_id] = USERS[sender.sender_id] + 1
+                COUNT_MSG = COUNT_MSG + 1
 
 
 CMD_HELP.update(

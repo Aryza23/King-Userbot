@@ -45,11 +45,7 @@ ARTIST = 0
 SONG = 0
 USER_ID = 0
 
-if BIO_PREFIX:
-    BIOPREFIX = BIO_PREFIX
-else:
-    BIOPREFIX = None
-
+BIOPREFIX = BIO_PREFIX or None
 LASTFMCHECK = False
 RUNNING = False
 LastLog = False
@@ -115,7 +111,7 @@ async def gettags(track=None, isNowPlaying=None, playing=None):
         arg = track.track
     if not tags:
         tags = arg.artist.get_top_tags()
-    tags = "".join([" #" + t.item.__str__() for t in tags[:5]])
+    tags = "".join([f" #{t.item.__str__()}" for t in tags[:5]])
     tags = sub("^ ", "", tags)
     tags = sub(" ", "_", tags)
     tags = sub("_#", " #", tags)
@@ -161,14 +157,13 @@ async def get_curr_track(lfmbio):
                 except AboutTooLongError:
                     short_bio = f"🎧: {SONG}"
                     await bot(UpdateProfileRequest(about=short_bio))
-            else:
-                if playing is None and user_info.about != DEFAULT_BIO:
-                    await sleep(6)
-                    await bot(UpdateProfileRequest(about=DEFAULT_BIO))
-                    if BOTLOG and LastLog:
-                        await bot.send_message(
-                            BOTLOG_CHATID, f"Mereset bio kembali ke\n{DEFAULT_BIO}"
-                        )
+            elif playing is None and user_info.about != DEFAULT_BIO:
+                await sleep(6)
+                await bot(UpdateProfileRequest(about=DEFAULT_BIO))
+                if BOTLOG and LastLog:
+                    await bot.send_message(
+                        BOTLOG_CHATID, f"Mereset bio kembali ke\n{DEFAULT_BIO}"
+                    )
         except AttributeError:
             try:
                 if user_info.about != DEFAULT_BIO:

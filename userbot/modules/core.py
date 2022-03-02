@@ -24,7 +24,7 @@ def load_module(shortname):
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        LOGS.info("Sukses Menambahkan Plugin " + shortname)
+        LOGS.info(f"Sukses Menambahkan Plugin {shortname}")
     else:
 
         path = Path(f"userbot/modules/{shortname}.py")
@@ -37,8 +37,8 @@ def load_module(shortname):
         mod.logger = logging.getLogger(shortname)
         spec.loader.exec_module(mod)
         # for imports
-        sys.modules["userbot.modules." + shortname] = mod
-        LOGS.info("Sukses Menambahkan Plugin " + shortname)
+        sys.modules[f"userbot.modules.{shortname}"] = mod
+        LOGS.info(f"Sukses Menambahkan Plugin {shortname}")
 
 
 @register(outgoing=True, pattern=r"^\.install$")

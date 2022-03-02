@@ -9,6 +9,7 @@
 """ Userbot initialization. """
 
 
+
 import os
 import time
 import re
@@ -103,9 +104,7 @@ PMPERMIT_PIC = os.environ.get(
 # Bleep Blop, this is a bot :)
 PM_AUTO_BAN = sb(os.environ.get("PM_AUTO_BAN", "False"))
 
-# Send .chatid in any group with all your administration bots (added)
-G_BAN_LOGGER_GROUP = os.environ.get("G_BAN_LOGGER_GROUP", "")
-if G_BAN_LOGGER_GROUP:
+if G_BAN_LOGGER_GROUP := os.environ.get("G_BAN_LOGGER_GROUP", ""):
     G_BAN_LOGGER_GROUP = int(G_BAN_LOGGER_GROUP)
 
 # Heroku Credentials for updater.
@@ -250,8 +249,7 @@ TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY",
 # Google Photos
 G_PHOTOS_CLIENT_ID = os.environ.get("G_PHOTOS_CLIENT_ID", None)
 G_PHOTOS_CLIENT_SECRET = os.environ.get("G_PHOTOS_CLIENT_SECRET", None)
-G_PHOTOS_AUTH_TOKEN_ID = os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", None)
-if G_PHOTOS_AUTH_TOKEN_ID:
+if G_PHOTOS_AUTH_TOKEN_ID := os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", None):
     G_PHOTOS_AUTH_TOKEN_ID = int(G_PHOTOS_AUTH_TOKEN_ID)
 
 # Genius lyrics  API
@@ -688,7 +686,7 @@ with king:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = f"\n**Menu Pengaturan!**"
+                text = "\\n**Menu Pengaturan!**"
                 await event.edit(
                     text,
                     file=logo,
@@ -704,7 +702,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -743,7 +742,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -769,7 +769,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -810,7 +811,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -861,7 +863,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -885,7 +888,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -919,7 +923,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -953,7 +958,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(
@@ -988,7 +994,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(events.CallbackQuery(data=b"close"))
@@ -1005,7 +1012,8 @@ with king:
                     ]
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = "❌ DISCLAIMER ❌\\n\\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @king.tgbot.on(

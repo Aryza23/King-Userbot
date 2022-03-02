@@ -57,8 +57,9 @@ async def insta(event):
             await event.client.send_file(
                 event.chat_id,
                 response.message.media,
-                caption=f"**Download By @KingUserbotSupport**",
+                caption="**Download By @KingUserbotSupport**",
             )
+
             await event.client.send_read_acknowledge(conv.chat_id)
             await bot(functions.messages.DeleteHistoryRequest(peer=chat, max_id=0))
             await event.delete()

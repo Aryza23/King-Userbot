@@ -179,8 +179,9 @@ async def upload_google_photos(event):
             "King-Goog-Upload-File-Name": file_name,
             "King-Goog-Upload-Protocol": "resumable",
             "King-Goog-Upload-Raw-Size": str(file_size),
-            "Authorization": "Bearer " + creds.access_token,
+            "Authorization": f"Bearer {creds.access_token}",
         }
+
         # Step 1: Initiating an upload session
         step_one_response = await session.post(
             f"{PHOTOS_BASE_URI}/v1/uploads", headers=headers,
@@ -214,8 +215,9 @@ async def upload_google_photos(event):
                     "Content-Length": str(part_size),
                     "King-Goog-Upload-Command": "upload",
                     "King-Goog-Upload-Offset": str(offset),
-                    "Authorization": "Bearer " + creds.access_token,
+                    "Authorization": f"Bearer {creds.access_token}",
                 }
+
                 logger.info(i)
                 logger.info(headers)
                 response = await session.post(
@@ -232,7 +234,7 @@ async def upload_google_photos(event):
                 )
                 logger.info(response.headers)
 
-                # await f_d.seek(i * upload_granularity)
+                            # await f_d.seek(i * upload_granularity)
             # await f_d.seek(upload_granularity)
             current_chunk = await f_d.read(upload_granularity)
 
@@ -240,9 +242,12 @@ async def upload_google_photos(event):
             headers = {
                 "Content-Length": str(len(current_chunk)),
                 "King-Goog-Upload-Command": "upload, finalize",
-                "King-Goog-Upload-Offset": str(number_of_req_s * upload_granularity),
-                "Authorization": "Bearer " + creds.access_token,
+                "King-Goog-Upload-Offset": str(
+                    number_of_req_s * upload_granularity
+                ),
+                "Authorization": f"Bearer {creds.access_token}",
             }
+
             logger.info(headers)
             response = await session.post(
                 real_upload_url, headers=headers, data=current_chunk
@@ -288,7 +293,7 @@ async def upload_google_photos(event):
 def file_ops(file_path):
     file_size = os.stat(file_path).st_size
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type or "text/plain"
     file_name = file_path.split("/")[-1]
     return file_name, mime_type, file_size
 

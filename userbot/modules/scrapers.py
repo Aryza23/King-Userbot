@@ -175,7 +175,7 @@ async def img_sampler(event):
     try:
         lim = lim[0]
         lim = lim.replace("lim=", "")
-        query = query.replace("lim=" + lim[0], "")
+        query = query.replace(f"lim={lim[0]}", "")
     except IndexError:
         lim = 15
     response = googleimagesdownload()
@@ -232,7 +232,7 @@ async def gsearch(q_event):
     try:
         page = page[0]
         page = page.replace("page=", "")
-        match = match.replace("page=" + page[0], "")
+        match = match.replace(f"page={page[0]}", "")
     except IndexError:
         page = 1
     search_args = (str(match), int(page))
@@ -253,8 +253,7 @@ async def gsearch(q_event):
 
     if BOTLOG:
         await q_event.client.send_message(
-            BOTLOG_CHATID,
-            "Google Search query `" + match + "` sukses dieksekusi",
+            BOTLOG_CHATID, f"Google Search query `{match}` sukses dieksekusi"
         )
 
 
@@ -300,7 +299,7 @@ async def _(event):
         mean = await urban.get_word(word)
         await event.edit("Text : **{}**\n\nBerarti : **{}**\n\nContoh : __{}__".format(mean.word, mean.definition, mean.example))
     except asyncurban.WordNotFoundError:
-        await event.edit("Tidak ada hasil yang ditemukan untuk **" + word + "**")
+        await event.edit(f"Tidak ada hasil yang ditemukan untuk **{word}**")
 
 
 @register(outgoing=True, pattern=r"^.tts(?: |$)([\s\S]*)")
@@ -572,9 +571,7 @@ async def download_video(v_url):
             if not x.endswith(".mp3")
         ][0]
         metadata = extractMetadata(createParser(f_name))
-        duration = 0
-        if metadata.has("duration"):
-            duration = metadata.get("duration").seconds
+        duration = metadata.get("duration").seconds if metadata.has("duration") else 0
         await v_url.client.send_file(
             v_url.chat_id,
             result,
@@ -602,7 +599,7 @@ async def download_video(v_url):
         # Noob way to convert from .mkv to .mp4
         if f_path.endswith(".mkv"):
             base = os.path.splitext(f_path)[0]
-            os.rename(f_path, base + ".mp4")
+            os.rename(f_path, f'{base}.mp4')
             f_path = glob(
                 os.path.join(
                     TEMP_DOWNLOAD_DIRECTORY,
@@ -620,15 +617,9 @@ async def download_video(v_url):
             )
         thumb_image = await get_video_thumb(f_path, "thumb.png")
         metadata = extractMetadata(createParser(f_path))
-        duration = 0
-        width = 0
-        height = 0
-        if metadata.has("duration"):
-            duration = metadata.get("duration").seconds
-        if metadata.has("width"):
-            width = metadata.get("width")
-        if metadata.has("height"):
-            height = metadata.get("height")
+        duration = metadata.get("duration").seconds if metadata.has("duration") else 0
+        width = metadata.get("width") if metadata.has("width") else 0
+        height = metadata.get("height") if metadata.has("height") else 0
         await v_url.client.send_file(
             v_url.chat_id,
             result,
@@ -763,9 +754,14 @@ async def parseqr(qr_e):
         await qr_e.get_reply_message())
     # parse the Official ZXing webpage to decode the QRCode
     command_to_exec = [
-        "curl", "-X", "POST", "-F", "f=@" + downloaded_file_name + "",
-        "https://zxing.org/w/decode"
+        "curl",
+        "-X",
+        "POST",
+        "-F",
+        f"f=@{downloaded_file_name}",
+        "https://zxing.org/w/decode",
     ]
+
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
         # stdout must a pipe to be accessible as process.stdout
@@ -1179,8 +1175,7 @@ async def capture(url):
     chrome_options.arguments.remove("--window-size=1920x1080")
     driver = await chrome(chrome_options=chrome_options)
     input_str = url.pattern_match.group(1)
-    link_match = match(r'\bhttps?://.*\.\S+', input_str)
-    if link_match:
+    if link_match := match(r'\bhttps?://.*\.\S+', input_str):
         link = link_match.group()
     else:
         return await url.edit("`I need a valid link to take screenshots from.`")
@@ -1204,9 +1199,7 @@ async def capture(url):
     im_png = driver.get_screenshot_as_png()
     # saves screenshot of entire page
     driver.quit()
-    message_id = url.message.id
-    if url.reply_to_msg_id:
-        message_id = url.reply_to_msg_id
+    message_id = url.reply_to_msg_id or url.message.id
     with io.BytesIO(im_png) as out_file:
         out_file.name = "screencapture.png"
         await url.edit("`Uploading screenshot as file..`")

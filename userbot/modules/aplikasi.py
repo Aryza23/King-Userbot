@@ -17,8 +17,9 @@ async def app_search(event):
         remove_space = app_name.split(" ")
         final_name = "+".join(remove_space)
         page = requests.get(
-            "https://play.google.com/store/search?q=" + final_name + "&c=apps"
+            f"https://play.google.com/store/search?q={final_name}&c=apps"
         )
+
         str(page.status_code)
         soup = bs4.BeautifulSoup(page.content, "lxml", from_encoding="utf-8")
         results = soup.findAll("div", "ZmHEEd")
@@ -58,7 +59,7 @@ async def app_search(event):
             .img["data-src"]
         )
         app_details = "<a href='" + app_icon + "'>📲&#8203;</a>"
-        app_details += " <b>" + app_name + "</b>"
+        app_details += f" <b>{app_name}</b>"
         app_details += (
             "\n\n<code>Developer :</code> <a href='"
             + app_dev_link
@@ -83,7 +84,7 @@ async def app_search(event):
     except IndexError:
         await event.edit("Tidak ada hasil yang ditemukan dalam pencarian, Silahkan mencari aplikasi **Yang Valid**")
     except Exception as err:
-        await event.edit("Pengecualian Terjadi :- " + str(err))
+        await event.edit(f"Pengecualian Terjadi :- {str(err)}")
 
 CMD_HELP.update(
     {

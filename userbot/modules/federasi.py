@@ -31,7 +31,7 @@ async def fban(event):
 
     self_user = await event.client.get_me()
 
-    if fban_id == self_user.id or fban_id == "@" + self_user.username:
+    if fban_id in [self_user.id, f"@{self_user.username}"]:
         return await event.edit(
             "**Error: Tindakan ini telah dicegah oleh protokol FeRuBoT.**"
         )
@@ -64,12 +64,12 @@ async def fban(event):
         except BaseException:
             failed.append(i.fed_name)
 
-    reason = reason if reason else "Not specified."
+    reason = reason or "Not specified."
 
     if failed:
         status = f"Gagal melakukan fban di {len(failed)}/{total} federasi.\n"
         for i in failed:
-            status += "• " + i + "\n"
+            status += f"• {i}" + "\n"
     else:
         status = f"Berhasil Fbanned Pengguna ini di {total} federasi."
 
@@ -99,7 +99,7 @@ async def unfban(event):
 
     self_user = await event.client.get_me()
 
-    if unfban_id == self_user.id or unfban_id == "@" + self_user.username:
+    if unfban_id in [self_user.id, f"@{self_user.username}"]:
         return await event.edit("**Tunggu, itu ilegal**")
 
     if len((fed_list := get_flist())) == 0:
@@ -129,16 +129,16 @@ async def unfban(event):
         except BaseException:
             failed.append(i.fed_name)
 
-    reason = reason if reason else "Not specified."
+    reason = reason or "Not specified."
 
     if failed:
         status = f"Gagal membatalkan fban di {len(failed)}/{total} federasi.\n"
         for i in failed:
-            status += "• " + i + "\n"
+            status += f"• {i}" + "\n"
     else:
         status = f"Berhasil Un-fbanned Pengguna ini di {total} federasi."
 
-    reason = reason if reason else "Tidak ditentukan."
+    reason = reason or "Tidak ditentukan."
     await event.edit(
         f"**Un-fbanned** {user_link}!\n**Alasan:** {reason}\n**Status:** {status}"
     )
@@ -191,7 +191,7 @@ async def listf(event):
     msg = "**Federasi yang terhubung:**\n\n"
 
     for i in fed_list:
-        msg += "• " + str(i.fed_name) + "\n"
+        msg += f"• {str(i.fed_name)}" + "\n"
 
     await event.edit(msg)
 

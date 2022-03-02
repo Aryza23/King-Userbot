@@ -75,12 +75,13 @@ async def on_snip_save(event):
     elif event.reply_to_msg_id and not string:
         rep_msg = await event.get_reply_message()
         string = rep_msg.text
-    success = (
-        "**Costum {} disimpan. Gunakan** `.{}` **di mana saja untuk menggunakannya**"
-    )
-    if add_snip(keyword, string, msg_id) is False:
-        await event.edit(success.format("Sukses", keyword))
-    else:
+    if (
+        add_snip(keyword, string, msg_id) is False
+        or add_snip(keyword, string, msg_id) is not False
+    ):
+        success = (
+            "**Costum {} disimpan. Gunakan** `.{}` **di mana saja untuk menggunakannya**"
+        )
         await event.edit(success.format("Sukses", keyword))
 
 
@@ -98,10 +99,7 @@ async def on_snip_list(event):
     for a_snip in all_snips:
         if message == "`Tidak ada kostum yang tersedia saat ini.`":
             message = "**Daftar Costum yang tersedia :**\n"
-            message += f"⎆ `.{a_snip.snip}`\n"
-        else:
-            message += f"⎆ `.{a_snip.snip}`\n"
-
+        message += f"⎆ `.{a_snip.snip}`\n"
     await event.edit(message)
 
 

@@ -21,7 +21,7 @@ async def on_new_message(event):
     name = event.raw_text
     snips = sql.get_chat_blacklist(event.chat_id)
     for snip in snips:
-        pattern = r"( |^|[^\w])" + re.escape(snip) + r"( |$|[^\w])"
+        pattern = f"( |^|[^\\w]){re.escape(snip)}( |$|[^\\w])"
         if re.search(pattern, name, flags=re.IGNORECASE):
             try:
                 await event.delete()
@@ -79,10 +79,12 @@ async def on_delete_blacklist(rmbl):
         {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
     )
 
-    successful = 0
-    for trigger in to_unblacklist:
-        if sql.rm_from_blacklist(rmbl.chat_id, trigger.lower()):
-            successful += 1
+    successful = sum(
+        1
+        for trigger in to_unblacklist
+        if sql.rm_from_blacklist(rmbl.chat_id, trigger.lower())
+    )
+
     if not successful:
         await rmbl.edit("`King,` **{}** `Tidak Ada Di Blacklist`".format(text))
     else:

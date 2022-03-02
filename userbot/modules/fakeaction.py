@@ -113,7 +113,6 @@ async def gbun(event):
     gbunVar = event.text
     gbunVar = gbunVar[6:]
     mentions = f"`Warning!! User 𝙂𝘽𝘼𝙉𝙉𝙀𝘿 By` {DEFAULTUSER}\n"
-    no_reason = "No Reason Given "
     await event.edit("**Summoning out the mighty gban hammer ☠️**")
     asyncio.sleep(3.5)
     chat = await event.get_input_chat()
@@ -142,9 +141,10 @@ async def gbun(event):
                 jnl += "**Username** : @{}\n".format(usname)
             if len(gbunVar) > 0:
                 gbunm = "`{}`".format(gbunVar)
-                gbunr = "**Reason: **" + gbunm
+                gbunr = f"**Reason: **{gbunm}"
                 jnl += gbunr
             else:
+                no_reason = "No Reason Given "
                 jnl += no_reason
             await reply_message.reply(jnl)
     else:
@@ -161,7 +161,6 @@ async def ungbun(event):
     ungbunVar = event.text
     ungbunVar = ungbunVar[6:]
     mentions = f"`Warning!! User 𝙐𝙉𝙂𝘽𝘼𝙉𝙉𝙀𝘿 By` {DEFAULTUSER}\n"
-    no_reason = "No Reason Given "
     await event.edit("**Summoning out the mighty ungban hammer ☠️**")
     asyncio.sleep(3.5)
     chat = await event.get_input_chat()
@@ -190,9 +189,10 @@ async def ungbun(event):
                 jnl += "**Username** : @{}\n".format(usname)
             if len(ungbunVar) > 0:
                 ungbunm = "`{}`".format(ungbunVar)
-                ungbunr = "**Reason: **" + ungbunm
+                ungbunr = f"**Reason: **{ungbunm}"
                 jnl += ungbunr
             else:
+                no_reason = "No Reason Given "
                 jnl += no_reason
             await reply_message.reply(jnl)
     else:

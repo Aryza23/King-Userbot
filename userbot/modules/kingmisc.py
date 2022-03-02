@@ -79,12 +79,11 @@ weebyfont = [
 
 logger = logging.getLogger(__name__)
 
-thumb_image_path = TEMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
+thumb_image_path = f'{TEMP_DOWNLOAD_DIRECTORY}/thumb_image.jpg'
 
 
-if 1 == 1:
-    name = "Profile Photo"
-    client = bot
+name = "Profile Photo"
+client = bot
 
 
 @register(outgoing=True, pattern="^.undlt(?: |$)(.*)")
@@ -107,7 +106,7 @@ async def _(event):
     if event.fwd_from:
         return
     input = event.pattern_match.group(1)  # get input
-    exp = "Given expression is " + input  # report back input
+    exp = f"Given expression is {input}"
     # lazy workaround to add support for two digits
     final_input = tuple(input)
     term1part1 = final_input[0]

@@ -30,9 +30,8 @@ async def _(event):
             return await event.reply("Unblock @Carol5_bot atau chat dulu")
         if pro.text.startswith("Wait for result..."):
             return await event.edit(f"Gagal generate {query}!")
-        else:
-            await event.edit(pro.message)
-            await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
+        await event.edit(pro.message)
+        await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
 
 
 @register(outgoing=True, pattern=r"^\.chk(?: |$)(.*)")
@@ -53,9 +52,8 @@ async def _(event):
             return await event.reply("Unblock @Carol5_bot atau chat dulu")
         if pro.text.startswith("Wait for result..."):
             return await event.edit(f"Gagal Mengecek {query}!")
-        else:
-            await event.edit(pro.message)
-            await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
+        await event.edit(pro.message)
+        await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
 
 
 @register(outgoing=True, pattern=r"^\.bin(?: |$)(.*)")
@@ -76,9 +74,8 @@ async def _(event):
             return await event.reply("Unblock @Carol5_bot atau chat dulu")
         if pro.text.startswith("Wait for result..."):
             return await event.edit(f"Bin {query} Invalid!")
-        else:
-            await event.edit(pro.message)
-            await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
+        await event.edit(pro.message)
+        await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
 
 
 @register(outgoing=True, pattern=r"^\.skey(?: |$)(.*)")
@@ -99,9 +96,8 @@ async def _(event):
             return await event.reply("Unblock @Carol5_bot atau chat dulu")
         if pro.text.startswith("Wait for result..."):
             return await event.edit("SK KEY Invalid!")
-        else:
-            await event.edit(pro.message)
-            await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
+        await event.edit(pro.message)
+        await event.client.delete_messages(conv.chat_id, [king.id, pro.id])
 
 
 @register(outgoing=True, pattern=r"^\.nmap(?: |$)(.*)")

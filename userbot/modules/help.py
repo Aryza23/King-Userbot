@@ -21,8 +21,7 @@ DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 @register(outgoing=True, pattern="^.help(?: |$)(.*)")
 async def help(event):
     """ For .help command,"""
-    args = event.pattern_match.group(1).lower()
-    if args:
+    if args := event.pattern_match.group(1).lower():
         if args in CMD_HELP:
             await event.edit(str(CMD_HELP[args]))
         else:
@@ -32,7 +31,7 @@ async def help(event):
     else:
         string = ""
         for i in CMD_HELP:
-            string += "`" + str(i)
+            string += f"`{str(i)}"
             string += f"`\t{EMOJI_HELP}  "
         await event.edit("**📙 Menu Help!**\n\n"
                          f"**King** {DEFAULTUSER}\n**◑» Plugins :** `{len(plugins)}`\n**◑» Branch :** __{UPSTREAM_REPO_BRANCH}__\n**◑» Versi Userbot :** `v{BOT_VER}`\n\n"

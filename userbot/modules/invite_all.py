@@ -49,7 +49,7 @@ async def get_chatinfo(event):
 async def get_users(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
-    if not sender.id == me.id:
+    if sender.id != me.id:
         king = await event.reply("`Sedang Memproses...`")
     else:
         king = await event.edit("`Memproses...`")
@@ -67,11 +67,11 @@ async def get_users(event):
             if error.startswith("Too"):
                 return await king.edit(f"**Terminal Kesalahan...**\n(`Mungkin Mendapat Kesalahan Batas dari telethon Tolong Coba Lagi`)\n**Error** : \n`{error}`\n\n• Menambahkan Pengguna `{s}`\n• Gagal Menambahkan Pengguna `{f}`")
             await event.client(functions.channels.InviteToChannelRequest(channel=chat, users=[user.id]))
-            s = s + 1
+            s += 1
             await king.edit(f"**Terminal Berjalan...**\n\n• Menambahkan Pengguna `{s}`\n• Gagal Menambahkan Pengguna `{f}`\n\n**Kesalahan Terakhir :** `{error}`")
         except Exception as e:
             error = str(e)
-            f = f + 1
+            f += 1
     return await king.edit(f"**Terminal Selesai** \n\n• Sukses Menambahkan Pengguna `{s}`\n• Gagal Menambahkan Pengguna `{f}`")
 
 

@@ -107,7 +107,7 @@ async def repeat(rep):
 
     replyText = toBeRepeated + "\n"
 
-    for i in range(0, replyCount - 1):
+    for _ in range(replyCount - 1):
         replyText += toBeRepeated + "\n"
 
     await rep.edit(replyText)
@@ -128,10 +128,7 @@ async def repo_is_here(wannasee):
 @register(outgoing=True, pattern="^.string$")
 async def string_is_here(wannasee):
     """ For .string command, just returns the string URL. """
-    await wannasee.edit(
-        f"   **String Session Userbot** \n\n"
-        "• **Get string session :** [String Session](https://replit.com/@apisuserbot/String-Session?v=1) \n\n"
-        "**Support :** [USERBOT TELEGRAM](https://t.me/KingUserbotSupport) ")
+    await wannasee.edit("   **String Session Userbot** \\n\\n")
 
 
 @register(outgoing=True, pattern="^.tutorial$")
@@ -221,10 +218,7 @@ async def okgoogle(img):
             await img.edit("`Tidak dapat menemukan apa pun untuk pantat jelekmu.`")
             return
 
-        if img.pattern_match.group(1):
-            lim = img.pattern_match.group(1)
-        else:
-            lim = 3
+        lim = img.pattern_match.group(1) or 3
         images = await scam(match, lim)
         yeet = []
         for i in images:
@@ -277,7 +271,7 @@ async def scam(results, lim):
 
     for imglink in oboi:
         counter += 1
-        if not counter >= int(lim):
+        if counter < int(lim):
             imglinks.append(imglink)
         else:
             break
